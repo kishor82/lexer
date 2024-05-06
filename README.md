@@ -18,13 +18,6 @@ what does it parse?
 # Abstract Syntax Tree (AST)
 An AST is a data structure which represents the program's structure. AST's are easy to traverse and have many uses.
 
-      +
-    /   \
-   2     *
-        / \
-       3   4
-
-
 # Producing an AST
 We will construct the AST by processing the tokens we received from the lexer.
 This process of building AST from tokens is called ==Parsing==.
