@@ -1,0 +1,62 @@
+package lexer
+
+type TokenKind int
+
+const (
+	EOF TokenKind = iota
+	NUMBER
+	STRING
+	IDENTIFIER
+
+	OPEN_BRACKET
+	CLOSE_BRACKET
+	OPEN_CURLY
+	CLOSE_CURLY
+	OPEN_PAREN
+	CLOSE_PAREN
+
+	ASSIGNMENT
+	EQUALS
+	NOT
+	NOT_EQUALS
+
+	LESS
+	LESS_EQUAL
+	SEMICOLON
+	COLON
+	QUESTION
+	COMMA
+
+	PLUS_PLUS
+	MINUS_MINUS
+	PLUS_EQUALS
+	MINUS_EQUALS
+
+	PLUS
+	DASH
+	SLASH
+	STAR
+	PERCENT
+
+	// Reserved Keywords
+	LET
+	CONST
+	CLASS
+	NEW
+	IMPORT
+	FROM
+	FN
+	IF
+	ELSE
+	FOREACH
+	WHILE
+	FOR
+	EXPORT
+	TYPEOF
+	IN
+)
+
+type Token struct {
+	Kind  TokenKind
+	Value string
+}
