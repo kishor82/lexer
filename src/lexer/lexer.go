@@ -1,6 +1,10 @@
 package lexer
 
-import "regexp"
+import (
+	"fmt"
+	"math"
+	"regexp"
+)
 
 type regexHandler func(lex *lexer, regex *regexp.Regexp)
 
@@ -19,6 +23,26 @@ type lexer struct {
 func Tokenize(source string) []Token {
 	lex := createLexer(source)
 
+	// iterate while we still have tokens
+	for !lex.at_eof() {
+		mathed := false
+
+		for _, pattern := range lex.patterns {
+
+			loc := pattern.regex.FindStringIndex(lex.reminder())
+			if loc != nil && loc[0] == 0 {
+				pattern.handler(lex, pattern.regex)
+				mathed = true
+				break
+			}
+		}
+
+		if !mathed {
+			panic(fmt.Sprintf("Lexer::Error -> unrecognize token near %s\n", lex.reminder()))
+		}
+	}
+
+	lex.push(NewToken(EOF, "EOF"))
 	return lex.Tokens
 }
 
@@ -61,7 +85,45 @@ func createLexer(source string) *lexer {
 		source: source,
 		Tokens: make([]Token, 0),
 		patterns: []regexPatten{
+			{regexp.MustCompile(`[0-9]+(\.[0-9]+)?`), numberHandler}
+			// order is important, specifically for `==` and `=` keywords
 			{regexp.MustCompile(`\[`), defaultHandler(OPEN_BRACKET, "[")},
+			{regexp.MustCompile(`\]`), defaultHandler(CLOSE_BRACKET, "]")},
+			{regexp.MustCompile(`\{`), defaultHandler(OPEN_CURLY, "{")},
+			{regexp.MustCompile(`\}`), defaultHandler(CLOSE_CURLY, "}")},
+			{regexp.MustCompile(`\(`), defaultHandler(OPEN_PAREN, "(")},
+			{regexp.MustCompile(`\)`), defaultHandler(CLOSE_PAREN, ")")},
+			{regexp.MustCompile(`==`), defaultHandler(EQUALS, "==")},
+			{regexp.MustCompile(`!=`), defaultHandler(NOT_EQUALS, "!=")},
+			{regexp.MustCompile(`=`), defaultHandler(ASSIGNMENT, "=")},
+			{regexp.MustCompile(`!`), defaultHandler(NOT, "!")},
+			{regexp.MustCompile(`<=`), defaultHandler(LESS_EQUALS, "<=")},
+			{regexp.MustCompile(`<`), defaultHandler(LESS, "<")},
+			{regexp.MustCompile(`>=`), defaultHandler(GREATER_EQUALS, ">=")},
+			{regexp.MustCompile(`>`), defaultHandler(GREATER, ">")},
+			{regexp.MustCompile(`\|\|`), defaultHandler(OR, "||")},
+			{regexp.MustCompile(`&&`), defaultHandler(AND, "&&")},
+			{regexp.MustCompile(`\.\.`), defaultHandler(DOT_DOT, "..")},
+			{regexp.MustCompile(`\.`), defaultHandler(DOT, ".")},
+			{regexp.MustCompile(`;`), defaultHandler(SEMI_COLON, ";")},
+			{regexp.MustCompile(`:`), defaultHandler(COLON, ":")},
+			{regexp.MustCompile(`\?`), defaultHandler(QUESTION, "?")},
+			{regexp.MustCompile(`,`), defaultHandler(COMMA, ",")},
+			{regexp.MustCompile(`\+\+`), defaultHandler(PLUS_PLUS, "++")},
+			{regexp.MustCompile(`--`), defaultHandler(MINUS_MINUS, "--")},
+			{regexp.MustCompile(`\+=`), defaultHandler(PLUS_EQUALS, "+=")},
+			{regexp.MustCompile(`-=`), defaultHandler(MINUS_EQUALS, "-=")},
+			{regexp.MustCompile(`\+`), defaultHandler(PLUS, "+")},
+			{regexp.MustCompile(`-`), defaultHandler(DASH, "-")},
+			{regexp.MustCompile(`/`), defaultHandler(SLASH, "/")},
+			{regexp.MustCompile(`\*`), defaultHandler(STAR, "*")},
+			{regexp.MustCompile(`%`), defaultHandler(PERCENT, "%")},
 		},
 	}
+}
+
+func numberHandler(lex *lexer, regex *regexp.Regexp){
+  match := regex.FindString(lex.reminder());
+  lex.push(NewToken(NUMBER, match))
+  lex.advanceN(len(match))
 }
