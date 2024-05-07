@@ -59,9 +59,9 @@ func createLexer(source string) *lexer {
 	return &lexer{
 		pos:    0,
 		source: source,
-		Tokens: make([]Tokens, 0),
+		Tokens: make([]Token, 0),
 		patterns: []regexPatten{
-			{regexp.MustCompile(`\[`), defaultHandler(OEPN_BRAKET, "[")},
+			{regexp.MustCompile(`\[`), defaultHandler(OPEN_BRACKET, "[")},
 		},
 	}
 }
