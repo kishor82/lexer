@@ -86,6 +86,7 @@ func createLexer(source string) *lexer {
 		patterns: []regexPatten{
 			{regexp.MustCompile(`[0-9]+(\.[0-9]+)?`), numberHandler},
 			{regexp.MustCompile(`"[^"]*"`), stringHandler},
+			{regexp.MustCompile(`\/\/.*`), skipHandler},
 			{regexp.MustCompile(`\s+`), skipHandler},
 			// order is important, specifically for keywords like `==` and `=`
 			{regexp.MustCompile(`\[`), defaultHandler(OPEN_BRACKET, "[")},
