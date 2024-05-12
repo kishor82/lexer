@@ -85,6 +85,7 @@ func createLexer(source string) *lexer {
 		Tokens: make([]Token, 0),
 		patterns: []regexPatten{
 			{regexp.MustCompile(`[0-9]+(\.[0-9]+)?`), numberHandler},
+			{regexp.MustCompile(`"[^"]*"`), stringHandler},
 			{regexp.MustCompile(`\s+`), skipHandler},
 			// order is important, specifically for keywords like `==` and `=`
 			{regexp.MustCompile(`\[`), defaultHandler(OPEN_BRACKET, "[")},
@@ -131,4 +132,12 @@ func numberHandler(lex *lexer, regex *regexp.Regexp) {
 func skipHandler(lex *lexer, regex *regexp.Regexp) {
 	match := regex.FindStringIndex(lex.reminder())
 	lex.advanceN(match[1])
+}
+
+func stringHandler(lex *lexer, regex *regexp.Regexp) {
+	match := regex.FindStringIndex(lex.reminder())
+	stringLiteral := lex.reminder()[match[0]:match[1]]
+
+	lex.push(NewToken(STRING, stringLiteral))
+	lex.advanceN(len(stringLiteral))
 }
