@@ -24,19 +24,19 @@ func Tokenize(source string) []Token {
 
 	// iterate while we still have tokens
 	for !lex.at_eof() {
-		mathed := false
+		mached := false
 
 		for _, pattern := range lex.patterns {
 
 			loc := pattern.regex.FindStringIndex(lex.reminder())
 			if loc != nil && loc[0] == 0 {
 				pattern.handler(lex, pattern.regex)
-				mathed = true
+				mached = true
 				break
 			}
 		}
 
-		if !mathed {
+		if !mached {
 			panic(fmt.Sprintf("Lexer::Error -> unrecognize token near %s\n", lex.reminder()))
 		}
 	}
