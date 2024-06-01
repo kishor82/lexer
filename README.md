@@ -50,3 +50,38 @@ This process of building AST from tokens is called ==Parsing==.
 Pratt parsing is commonly used in simple expression evaluators and compilers, particularly for languages with operator-based syntax. It provides an elegant and efficient approach to parsing expressions while respecting operator precedence and associativity rules.
 
 good read: [Simple but powerful pratt parsing](https://matklad.github.io/2020/04/13/simple-but-powerful-pratt-parsing.html)
+
+# Binding Power
+Binding power (also known as precedence) determines how tightly an operator binds to its operands. Higher binding power means the operator binds more tightly, thus getting evaluated earlier in the expression. For example, in the expression 3 + 4 * 5, the multiplication operator * has higher binding power than the addition operator +, so 4 * 5 is evaluated first.
+
+# NUD (Null Denotation)
+NUD stands for `Null Denotation`. It is a function that defines how to parse expressions that start with a specific token. NUD is used for tokens that appear at the beginning of an expression. For instance:
+
+A number might have a NUD function that simply returns the numeric value.
+A parenthesis might have a NUD function that parses an enclosed expression until a closing parenthesis is found.
+
+example: prefix or unary expressions.
+
+# LED (Left Denotation)
+LED stands for `Left Denotation`. It is a function that defines how to parse expressions that continue with a specific token, given the left-hand side (LHS) of the expression. LED is used for infix operators (like + or *) and postfix operators. For example:
+
+An addition operator + might have a LED function that parses the right-hand side (RHS) of the addition expression and combines it with the LHS.
+Example of Pratt Parsing
+
+example: infix and postfix expressions
+
+# Lookup Table
+A **lookup table** is a data structure used to store information about the behavior of tokens, specifically their binding powers and the functions used to parse them (NUD and LED functions). This table allows the parser to quickly access the appropriate actions for each token type.
+
+### Key Elements of a Lookup Table in Pratt Parsing
+
+1. **Token Type:** Identifies the type of token (e.g., number, plus sign, parenthesis).
+2. **Binding Power:** Indicates the precedence of the token, which helps in determining how tightly the token binds to its operands.
+3. **NUD Function:** Defines how the parser should handle this token if it appears at the start of an expression.
+4. **LED Function:** Defines how the parser should handle this token if it appears in the middle of an expression, given the left-hand side.
+
+### Benefits of Using a Lookup Table
+
+- **Efficiency:** Quick access to token handling logic based on the token type.
+- **Flexibility:** Easy to update or extend the parser by modifying the lookup table without changing the core parsing logic.
+- **Clarity:** Clear separation of concerns, with token behavior defined in one place, making the parser code easier to understand and maintain.
