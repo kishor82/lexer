@@ -85,3 +85,18 @@ A **lookup table** is a data structure used to store information about the behav
 - **Efficiency:** Quick access to token handling logic based on the token type.
 - **Flexibility:** Easy to update or extend the parser by modifying the lookup table without changing the core parsing logic.
 - **Clarity:** Clear separation of concerns, with token behavior defined in one place, making the parser code easier to understand and maintain.
+
+-   **Expression**: An expression is a combination of values, variables, operators, and function calls that evaluates to a single value. Expressions are fundamental constructs in programming languages that produce values when evaluated.
+    
+    -   **Examples**:
+        -   `3 + 4`
+        -   `x * y`
+        -   `func(a, b)`
+        -   `"Hello, " + "world!"`
+-   **Statement**: A statement is a complete unit of execution that performs some action. Statements are typically used to control the flow of a program, declare variables, assign values, and more. Statements do not necessarily produce values.
+    
+    -   **Examples**:
+        -   `if (x > 0) { ... }`
+        -   `while (i < 10) { ... }`
+        -   `int x = 5;`
+        -   `return;`
