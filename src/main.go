@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 
 	"github.com/kishor82/lexer/src/lexer"
+	"github.com/kishor82/lexer/src/parser"
+	"github.com/sanity-io/litter"
 )
 
 func main() {
@@ -26,6 +28,11 @@ func main() {
 
 			for _, token := range tokens {
 				token.Debug()
+			}
+			if info.Name() == "03.lang" {
+				// TODO: parser doesn't handle minus sign ("-") or DASH so conditionally parsing here
+				ast := parser.Parse(tokens)
+				litter.Dump(ast)
 			}
 		}
 
