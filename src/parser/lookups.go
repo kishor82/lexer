@@ -57,6 +57,28 @@ func stmt(kind lexer.TokenKind, stmt_fn stmt_handler) {
 }
 
 func createTokenLookups() {
+	// logical
+	led(lexer.AND, logical, parse_binary_expr)
+	led(lexer.OR, logical, parse_binary_expr)
+	led(lexer.DOT_DOT, logical, parse_binary_expr)
+
+	// Relational
+	led(lexer.LESS, logical, parse_binary_expr)
+	led(lexer.LESS_EQUALS, logical, parse_binary_expr)
+	led(lexer.GREATER, logical, parse_binary_expr)
+	led(lexer.GREATER_EQUALS, logical, parse_binary_expr)
+	led(lexer.EQUALS, logical, parse_binary_expr)
+	led(lexer.NOT_EQUALS, logical, parse_binary_expr)
+	led(lexer.EQUALS, logical, parse_binary_expr)
+
+	// Additive and Multiplicative
+	led(lexer.PLUS, additive, parse_binary_expr)
+	led(lexer.DASH, additive, parse_binary_expr)
+
+	led(lexer.STAR, multiplicative, parse_binary_expr)
+	led(lexer.SLASH, multiplicative, parse_binary_expr)
+	led(lexer.PERCENT, multiplicative, parse_binary_expr)
+
 	// Literal and Symbols
 	nud(lexer.NUMBER, parse_primary_expr)
 	nud(lexer.STRING, parse_primary_expr)
