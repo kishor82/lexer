@@ -100,3 +100,22 @@ A **lookup table** is a data structure used to store information about the behav
         -   `while (i < 10) { ... }`
         -   `int x = 5;`
         -   `return;`
+
+# Parsing variable declarations
+
+## syntax example 
+
+variable declarations in our language will have this syntax
+
+```js
+let variableName = Expr;
+const variableName = Expr;
+```
+### Explicit Types
+variable declarations can also have explicit type declarations. This is done using a syntax similar to typesript. if no type is defined we call that implicit type interface
+
+```ts
+let variableName:Type = Expr;
+const variableName:Type = Expr;
+```
+
