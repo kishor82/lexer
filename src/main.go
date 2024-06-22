@@ -26,10 +26,17 @@ func main() {
 			bytes, _ := os.ReadFile(path)
 			tokens := lexer.Tokenize(string(bytes))
 
+			fmt.Printf(":- Tokens -:\n")
+			fmt.Printf("------------\n")
+
 			for _, token := range tokens {
 				token.Debug()
 			}
-			if info.Name() == "02.lang" {
+
+			fmt.Printf(":- AST -:\n")
+			fmt.Printf("---------\n")
+
+			if info.Name() == "02.lang" || info.Name() == "03.lang" {
 				// TODO: parser doesn't handle minus sign ("-") or DASH so conditionally parsing here
 				ast := parser.Parse(tokens)
 				litter.Dump(ast)
